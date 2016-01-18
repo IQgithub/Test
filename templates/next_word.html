@@ -14,7 +14,7 @@ $(document).ready(function() {
 
           $.ajax({
             method: "POST",
-            url: "http://127.0.0.1:5000/next_word",
+            url: "./next_word",
             data: { text: $('.text').val()},
             dataType: "json",
         }).done(function(words){
@@ -30,6 +30,7 @@ $(document).ready(function() {
 
       </script>
 
+{#            url: "http://127.0.0.1:5000/next_word",#}
 
   </head>
 
