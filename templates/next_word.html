@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script>
+
+$(document).ready(function() {
+
+  $( ".predict" ).on( "click", function() {
+    console.log( $('.text').val() );
+    $('.word').remove();
+
+          $.ajax({
+            method: "POST",
+            url: "http://127.0.0.1:5000/next_word",
+            data: { text: $('.text').val()},
+            dataType: "json",
+        }).done(function(words){
+            for (var i in words){
+                $(".words").append('<p class="word" >' + words[i] + '</p>');
+            }
+        });
+
+
+  });
+
+} );
+
+      </script>
+
+
+  </head>
+
+  <body>
+    <div>
+        <div >
+            Enter your text:<input id="text" class="text" type="text" name="text" value="">
+        </div>
+
+        <div >
+{#            <a class="predict" alignment="right" class="btn btn-primary btn-large">#}
+{#            Click here to predict next word#}
+{#            </a>#}
+            <button class="predict" type="button">Click here for next word...</button>
+            <div class='words'>
+
+            </div>
+
+        </div>
+
+    </div>
+
+  </body>
+
+</html>

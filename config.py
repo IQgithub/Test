@@ -1,0 +1,1 @@
+SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://admin:IQpassword@AWSTwitter'

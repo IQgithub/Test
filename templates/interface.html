@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script data-require="jquery@*" data-semver="2.1.4" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css" />
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+      <script src="{{ url_for('static',filename='js/interface.js') }}"></script>
+
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span12" style="padding: 5px;background-color: #cccccc">
+
+          Text:<input id="text" class="text" type="text" name="text" value="Mickey">
+          <a class="predict" alignment="right" class="btn btn-primary btn-large">
+              Next Word?
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span12" style="padding: 5px;background-color: #005682">
+          <select class='words' size=5>
+            <option class="word" value="volvo">Volvo</option>
+            <option class="word" value="saab">Saab</option>
+            <option class="word" value="opel">Opel</option>
+            <option class="word" value="audi">Audi</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
