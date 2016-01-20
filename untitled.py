@@ -192,8 +192,6 @@ def next_word():
 
     response = json.dumps(unique_words)
 
-    response.headers.add('Access-Control-Allow-Origin', '*')
-
     return response
 
 
