@@ -71,10 +71,12 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 @app.route('/')
 def hello_world():
-    return render_template("next_word.html")
+    # return render_template("interface.html")
+    return ''
 
 
 @app.route('/predict', methods=['GET', 'POST'])
+@crossdomain(origin='*')
 def predict():
     form = request.form
     text = form["text"]
@@ -107,7 +109,7 @@ def predict():
 
     rows = ()
 
-    while len(rows) < 5:
+    while len(rows) < 5 and f2 > 1:
 
         query = "EXEC sp_predict @l1='{l1}', @l2='{l2}', @l3='{l3}', @f2={f2}, @f3={f3}, @f4={f4}".format(
                     l1=l1, l2=l2, l3=l3, f2=f2, f3=f3, f4=f4)
@@ -185,6 +187,10 @@ def next_word():
     for r in rows:
         word = str(r.l4)
         words.append(word)
+
+    if len(words) == 0:
+        words.append("Your message contains only stopwords or no prediction could be made for your next word. Please enter next word.")
+
 
     unique_words = list(set(words))
 

@@ -10,32 +10,195 @@
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
-      <script src="{{ url_for('static',filename='js/interface.js') }}"></script>
+{#    <script src="{{ url_for('static',filename='js/interface.js') }}"></script>#}
+    <script>
+$(document).ready(function() {
+
+    $('#noresults').hide();
+    $('#results').hide();
+    $('#instructions').show();
+
+  $( '#forceprediction' ).on( 'click', function() {
+    $('.bigram').remove();
+    $('.trigram').remove();
+    $('.fourgram').remove();
+
+      $.ajax({
+        method: 'POST',
+        url: './predict',
+        data: { text: $('.text').val()},
+        dataType: 'json',
+        }).done(function(tokens){
+            if ($('.text').val().length == 0){
+                $('#noresults').hide();
+                $('#results').hide();
+                $('#instructions').show();
+            }
+            else if (tokens.length == 0) {
+                $('#noresults').show();
+                $('#results').hide();
+                $('#instructions').hide();
+            }
+
+            else {
+                $('#noresults').hide();
+                $('#results').show();
+                $('#instructions').hide();
+            }
+            for (var i in tokens){
+                if (tokens[i].ngram == '4'){
+                    $('.fourgrams').append('<button type="button" class="fourgram btn btn-success">' + tokens[i].l4.trim() + '</button>');
+                }
+                if (tokens[i].ngram == '3'){
+                    $('.trigrams').append('<button type="button" class="trigram btn btn-info">' + tokens[i].l4.trim() +  '</button>');
+                }
+                if (tokens[i].ngram == '2'){
+                    $('.bigrams').append('<button type="button" class="bigram btn btn-warning">' + tokens[i].l4.trim() +  '</button>');
+                }
+            }
+        });
+  });
+
+    $('body').on('keydown', '#message', function(k){
+        if (k.which == 32) {
+            $('#forceprediction').trigger('click');
+        }
+    });
+
+    $('table').on( 'click', 'button', function() {
+        $('.text').val($('.text').val() + $(this).html() + ' ');
+        $('.text').focus();
+        $('#forceprediction').trigger('click');
+    })
+
+    $('#clearmsg').on( 'click', function() {
+        $('.text').val('');
+        $('.text').focus();
+        $('#noresults').hide();
+        $('#results').hide();
+        $('#instructions').show();
+    })
+
+} );
+
+    </script>
 
   </head>
 
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="span12" style="padding: 5px;background-color: #cccccc">
+  <body style="background-color: #000">
 
-          Text:<input id="text" class="text" type="text" name="text" value="Mickey">
-          <a class="predict" alignment="right" class="btn btn-primary btn-large">
-              Next Word?
-          </a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="span12" style="padding: 5px;background-color: #005682">
-          <select class='words' size=5>
-            <option class="word" value="volvo">Volvo</option>
-            <option class="word" value="saab">Saab</option>
-            <option class="word" value="opel">Opel</option>
-            <option class="word" value="audi">Audi</option>
-          </select>
-        </div>
-      </div>
-    </div>
+      <div class="container-fluid text-center">
+          <div class="row content">
+            <div class="col-sm-2 sidenav">
+            </div>
+            <div class="col-sm-8 text-center">
+
+                <div class="jumbotron text-primary" align="center" style="background-color: #022">
+                    <h2 class="text-primary">Data Science Specialization</h2>
+                    <h3 class="text-primary">Capstone Project</h3>
+                    <h5 class="text-primary">
+                        App that highlights a prediction algorithm to predict that next word to
+                        be typed by a user. The algorithm was based on 3 different data sources: Twitter,
+                        Blogs and News.
+                    </h5>
+                    <h5 class="text-primary">by</h5>
+                    <h5 class="text-primary">Daniel Ibanez</h5>
+                </div>
+
+                <div class="jumbotron text-primary" align="center" style="background-color: #ccc">
+                    <h3>Type your message:</h3>
+                    <input class="text form-control input-lg" id="message" type="text">
+                    <h5>
+                        Type your message and the next word will be predicted after you type a space (press the
+                        spacebar). Only literals are predicted, all stopwords are ignored and no prediction is
+                        made for them. To force prediction for the next word without typing a space, press the
+                        red button below.
+                    </h5>
+                    <button id="forceprediction" type="button" class="btn btn-danger">Force Prediction</button>
+                    <button id="clearmsg" type="button" class="btn btn-warning">Clear Message</button>
+                </div>
+
+                <div id="results" class="results jumbotron text-primary" align="center" style="background-color: #ccc">
+
+                    <h3>Predicted Next Word:</h3>
+
+                  <table class="table text-center">
+                    <thead>
+                      <tr >
+                        <th class="text-center">From Fourgrams</th>
+                        <th class="text-center">From Trigrams</th>
+                        <th class="text-center">From Bigrams</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr align="center">
+                        <td>
+                            <div class="fourgrams btn-group-vertical">
+                              <button type="button" class="fourgram btn btn-success">Apple</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="trigrams btn-group-vertical">
+                              <button type="button" class="trigram btn btn-info">Apple</button>
+                              <button type="button" class="trigram btn btn-info">Samsung</button>
+                              <button type="button" class="trigram btn btn-info">Sony</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="bigrams btn-group-vertical">
+                              <button type="button" class="bigram btn btn-warning">Apple</button>
+                              <button type="button" class="bigram btn btn-warning">Samsung</button>
+                              <button type="button" class="bigram btn btn-warning">Sony</button>
+                              <button type="button" class="bigram btn btn-warning">Sony</button>
+                              <button type="button" class="bigram btn btn-warning">Sony</button>
+                            </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><h5>
+                            Fourgrams are less frequent but contain more context.
+                            Predictions are usually very accurate. Requires at lease 3 literals in the
+                            message to make a prediction.
+                        </h5></td>
+                        <td><h5>
+                            Trigrams are a nice compromise between context and frequency, but are still less common than
+                            Bigrams. Requires at lease 2 literals in the
+                            message to make a prediction.
+                        </h5></td>
+                        <td><h5>
+                            Bigrams are very easy to find, however they lack context. Certainty, even in high frequency
+                            occurrences is low.are  Requires only 1 literal in the
+                            message to make a prediction.
+                        </h5></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <div id="noresults" class="jumbotron text-danger" align="center" style="background-color: #ccc">
+                    <h3 class="text-danger">
+                        No predictions could be made or all of the words in your message are stopwords.
+                        This app only predicts based on literals.
+                    </h3>
+                </div>
+
+                <div id="instructions" class="jumbotron text-danger" align="center" style="background-color: #ccc">
+                    <h3 class="text-success">
+                        The app will try to predict your next word (literal) based on what you type on your message. The
+                        prediction is based on literals and ignores stopwords. So no predictions are made for stopwords.
+                        <br>
+                        <br>
+                        Start typing your message and a prediction will be made when you type a space (indicating a
+                        new word) or when you press the red button.
+                    </h3>
+                </div>
+
+            </div>
+            <div class="col-sm-2 sidenav">
+            </div>
+          </div>
+
   </body>
 
 </html>

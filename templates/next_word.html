@@ -2,57 +2,56 @@
 <html>
 
   <head>
-
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
       <script>
-
-$(document).ready(function() {
-
-  $( ".predict" ).on( "click", function() {
-    console.log( $('.text').val() );
-    $('.word').remove();
-
-          $.ajax({
-            method: "POST",
-            url: "./next_word",
-            data: { text: $('.text').val()},
-            dataType: "json",
-        }).done(function(words){
-            for (var i in words){
-                $(".words").append('<p class="word" >' + words[i] + '</p>');
-            }
+      $(document).ready(function() {
+        $( ".nextword" ).on( "click", function() {
+          $(".word").remove();
+                $.ajax({
+                  method: "POST",
+                  url: "./next_word",
+                  data: { text: $('.text').val()},
+                  dataType: "json",
+              }).done(function(words){
+                  for (var i in words){
+                      $(".words").append('<button type="button" class="word btn btn-info disabled">' + words[i] + '</button>&nbsp;');
+                  }
+              });
         });
-
-
-  });
-
-} );
-
+      } );
       </script>
-
-{#            url: "http://127.0.0.1:5000/next_word",#}
-
   </head>
 
   <body>
-    <div>
-        <div >
-            Enter your text:<input id="text" class="text" type="text" name="text" value="">
-        </div>
-
-        <div >
-{#            <a class="predict" alignment="right" class="btn btn-primary btn-large">#}
-{#            Click here to predict next word#}
-{#            </a>#}
-            <button class="predict" type="button">Click here for next word...</button>
-            <div class='words'>
-
-            </div>
-
-        </div>
-
+    <div class="alert alert-info">
+      <h2 align="center"><strong>Data Science Capstone - Final Project</strong></h2>
+      <br>
+      <h5 align="right"><strong>Diana Amador</strong></h2>
     </div>
-
+    <div class="jumbotron">
+        <div class="container">
+            <div class="form-group">
+              <label for="usr">Enter your message:</label>
+              <input type="text" class="text form-control" id="usr" value="">
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <div align="center">
+              <button type="button" class="nextword btn btn-primary btn-block">Click here for next word...</button>
+            </div>
+            <br>
+            <div>
+            </div>
+            <div class='words' align="center">
+            </div>
+        </div>
+    </div>
   </body>
-
 </html>
